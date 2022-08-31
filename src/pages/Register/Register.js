@@ -1,14 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Register.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AmazonLogo from "../../Amazon_Logo.png";
+import { useSelector, useDispatch } from "react-redux";
+import { registerInitiate } from "../../redux/actions";
 
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const { user } = useSelector((state) => state.data);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user, dispatch]);
+
+  let dispatch = useDispatch();
+
   const register = (e) => {
     e.preventDefault();
+    dispatch(registerInitiate(email, password));
+    setEmail("");
+    setPassword("");
   };
   return (
     <div className="register">
