@@ -10,6 +10,13 @@ import { auth } from "./utils/firebase";
 import { setuser } from "./redux/actions";
 import SingleProduct from "./pages/SingleProduct/SingleProduct";
 import Checkout from "./pages/Checkout/Checkout";
+import Payment from "./pages/Payment/Payment";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+
+const promise = loadStripe(
+  "pk_test_51LdAF7SJC6JDEwwj9c1Fo8emroePnBzhQ6c79C4waGBjsIQXYE2Uw4SnO04fMLcPA5MXPrf1sMXfsPWGrzwLPwkA00zQukrEBh"
+);
 
 function App() {
   let dispatch = useDispatch();
@@ -27,6 +34,17 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <Routes>
+          <Route
+            path="/payment"
+            element={
+              <>
+                <Header />
+                <Elements stripe={promise}>
+                  <Payment />
+                </Elements>
+              </>
+            }
+          />
           <Route
             path="/checkout"
             element={
