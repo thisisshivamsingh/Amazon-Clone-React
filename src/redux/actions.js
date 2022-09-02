@@ -57,6 +57,10 @@ export const setuser = (user) => ({
   payload: user,
 });
 
+export const setBasketEmpty = () => ({
+  type: types.SET_BASKET_EMPTY,
+});
+
 export const registerInitiate = (email, password) => {
   return function (dispatch) {
     dispatch(registerStart());

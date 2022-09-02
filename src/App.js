@@ -1,18 +1,28 @@
-import React, { useEffect } from "react";
+import React, { useEffect, lazy, Suspense } from "react";
 import "./App.css";
 import { Routes, BrowserRouter, Route } from "react-router-dom";
-import Home from "./pages/Home/Home";
+// import Home from "./pages/Home/Home";
 import Header from "./components/Header/Header";
-import Login from "./pages/Login/Login";
-import Register from "./pages/Register/Register";
+// import Login from "./pages/Login/Login";
+// import Register from "./pages/Register/Register";
 import { useDispatch } from "react-redux";
 import { auth } from "./utils/firebase";
 import { setuser } from "./redux/actions";
-import SingleProduct from "./pages/SingleProduct/SingleProduct";
-import Checkout from "./pages/Checkout/Checkout";
-import Payment from "./pages/Payment/Payment";
+// import SingleProduct from "./pages/SingleProduct/SingleProduct";
+// import Checkout from "./pages/Checkout/Checkout";
+// import Payment from "./pages/Payment/Payment";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
+import Loading from "./components/Loading/Loading";
+// import Orders from "./pages/Orders/Orders";
+
+const Home = lazy(() => import("./pages/Home/Home"));
+const Login = lazy(() => import("./pages/Login/Login"));
+const Register = lazy(() => import("./pages/Register/Register"));
+const Checkout = lazy(() => import("./pages/Checkout/Checkout"));
+const Payment = lazy(() => import("./pages/Payment/Payment"));
+const Orders = lazy(() => import("./pages/Orders/Orders"));
+const SingleProduct = lazy(() => import("./pages/SingleProduct/SingleProduct"));
 
 const promise = loadStripe(
   "pk_test_51LdAF7SJC6JDEwwj9c1Fo8emroePnBzhQ6c79C4waGBjsIQXYE2Uw4SnO04fMLcPA5MXPrf1sMXfsPWGrzwLPwkA00zQukrEBh"
@@ -35,13 +45,26 @@ function App() {
       <div className="App">
         <Routes>
           <Route
+            path="/orders"
+            element={
+              <>
+                <Suspense fallback={<Loading />}>
+                  <Header />
+                  <Orders />
+                </Suspense>
+              </>
+            }
+          />
+          <Route
             path="/payment"
             element={
               <>
-                <Header />
-                <Elements stripe={promise}>
-                  <Payment />
-                </Elements>
+                <Suspense fallback={<Loading />}>
+                  <Header />
+                  <Elements stripe={promise}>
+                    <Payment />
+                  </Elements>
+                </Suspense>
               </>
             }
           />
@@ -49,8 +72,10 @@ function App() {
             path="/checkout"
             element={
               <>
-                <Header />
-                <Checkout />
+                <Suspense fallback={<Loading />}>
+                  <Header />
+                  <Checkout />
+                </Suspense>
               </>
             }
           />
@@ -58,19 +83,37 @@ function App() {
             path="/product/:id"
             element={
               <>
-                <Header />
-                <SingleProduct />
+                <Suspense fallback={<Loading />}>
+                  <Header />
+                  <SingleProduct />
+                </Suspense>
               </>
             }
           />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
+          <Route
+            path="/register"
+            element={
+              <Suspense fallback={<Loading />}>
+                <Register />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <Suspense fallback={<Loading />}>
+                <Login />
+              </Suspense>
+            }
+          />
           <Route
             path="/"
             element={
               <>
-                <Header />
-                <Home />
+                <Suspense fallback={<Loading />}>
+                  <Header />
+                  <Home />
+                </Suspense>
               </>
             }
           />

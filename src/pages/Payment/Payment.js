@@ -8,6 +8,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { db } from "../../utils/firebase";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import axios from "../../utils/axios";
+import { setBasketEmpty } from "../../redux/actions";
 
 const Payment = () => {
   const { basket, user } = useSelector((state) => state.data);
@@ -58,6 +59,7 @@ const Payment = () => {
         setSucceeded(true);
         setError(null);
         setProcessing(false);
+        dispatch(setBasketEmpty());
         navigate("/orders");
       });
   };
