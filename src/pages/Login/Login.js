@@ -50,7 +50,7 @@ const Login = () => {
           </button>
         </form>
         <p>
-          By continuing, you agree to Amazon's Conditions of Use and Privacy
+          By continuing, you agree to Amazon Conditions of Use and Privacy
           Notice.
         </p>
       </div>
